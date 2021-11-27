@@ -21,3 +21,4 @@ House Test
 test => file:///home/jsavitz/hubify/foobar
 testx info (0,0,0) test/x
 testy info (0,0,1) test/y
+testz info (0,0,2) test/z
