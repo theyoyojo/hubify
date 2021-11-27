@@ -76,7 +76,10 @@ function genhouse() {
 	coordcmd=sprintf("echo '%%s' >> %s.coords", house);
 	thiscoordcmd=sprintf("echo '# COORDINATOR 0.1' > %s.coords", house);
 	system(thiscoordcmd)
-	printf "[COORDINATE %s]\n", house
+	printf "[HOUSE %s]\n", house
+
+	housecmd=sprintf("echo '%s' > House", house)
+	system(housecmd)
 }
 
 function gencoords(idx) {
@@ -114,7 +117,7 @@ END {
 		type=typeents[i]
 		switch (type) {
 		case "info":
-			printf "[GENERATE info %s]\n", navents[i]
+			printf "[CONSTRUCT info %s]\n", navents[i]
 			contentcmd=sprintf("cat %s.md | pandoc -f markdown >> %s", navents[i], outfile);
 			# printf "%s\n", contentcmd
 			system(contentcmd);

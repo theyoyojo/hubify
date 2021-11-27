@@ -13,8 +13,9 @@ other meta info?
 stages
 
 1. parse floorplan and generate navigation header and coordfile
+1a. add style to header
 2. generate table+minimap from coordfile
 3. ???
-4. generate the webpages
+4. generate the actual webpages
 
 what do do about links?
