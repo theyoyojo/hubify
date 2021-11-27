@@ -1,0 +1,3 @@
+# hubify
+
+dependencies: gawk, pandoc

@@ -1,5 +1,8 @@
 #!/bin/awk -f
 
+# Notes:
+# break up into pieces?
+
 function mkpipe(name, url) {
 	# printf "PIPE: name=%s url=%s\n", name, url;
 	pipes[name]=url
@@ -70,6 +73,18 @@ function gennav() {
 
 function genhouse() {
 	headerfile = headerfile sprintf("<h1>%s</h1>\n", house);
+	coordcmd=sprintf("echo '%%s' >> %s.coords", house);
+	thiscoordcmd=sprintf("echo '# COORDINATOR 0.1' > %s.coords", house);
+	system(thiscoordcmd)
+	printf "[COORDINATE %s]\n", house
+}
+
+function gencoords(idx) {
+	coords=coordents[i]	
+	# printf "COORDS: %s\n", coords;
+	thiscoordcmd=sprintf(coordcmd, coords);
+	# printf "cmd: %s\n", thiscoordcmd;
+	system(thiscoordcmd)
 }
 
 END {
@@ -77,6 +92,9 @@ END {
 	gennav();
 
 	for (i=0; i<roomcnt; ++i) {
+		
+		gencoords(i);
+
 		destname=destents[i];
 		realtest=pipes[destname];
 		protidx=index(realdest, "://");

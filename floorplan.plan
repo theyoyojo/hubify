@@ -1,0 +1,20 @@
+# THE PLAN FOR THE FLOOR PLAN
+
+INPUTS:
+
+rooms: a page with some kind of functionality
+
+House: the name of the building
+
+Pipes: The plumbing of what coordinates map to what endpoint
+
+other meta info?
+
+stages
+
+1. parse floorplan and generate navigation header and coordfile
+2. generate table+minimap from coordfile
+3. ???
+4. generate the webpages
+
+what do do about links?
