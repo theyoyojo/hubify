@@ -86,8 +86,12 @@ END {
 		system(ensuredir)
 	
 		outfile = outdir "/index.html"
-		cmd=sprintf("echo '%s' > %s", headerfile, outfile)
+		headercmd=sprintf("echo '%s' > %s", headerfile, outfile)
 		# printf "cmd=%s\n", cmd
-		system(cmd)
+		system(headercmd)
+		
+		contentcmd=sprintf("cat %s.md | pandoc -f markdown >> %s", navents[i], outfile)
+		printf "%s\n", contentcmd
+		system(contentcmd)
 	}
 }
