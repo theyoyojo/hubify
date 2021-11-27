@@ -14,6 +14,10 @@
 
 House Test
 
+# how should these links work?
+# - local version
+# - fix when pushing to server
+# - dash may fix this
 test => file:///home/jsavitz/hubify/foobar
 testx info (0,0,0) test/x
 testy info (0,0,1) test/y
