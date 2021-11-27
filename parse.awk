@@ -3,6 +3,8 @@
 # Notes:
 # break up into pieces?
 
+@include "utils.awk"
+
 function mkpipe(name, url) {
 	# printf "PIPE: name=%s url=%s\n", name, url;
 	pipes[name]=url
@@ -88,6 +90,10 @@ function gencoords(idx) {
 	thiscoordcmd=sprintf(coordcmd, coords);
 	# printf "cmd: %s\n", thiscoordcmd;
 	system(thiscoordcmd)
+
+	roomlocation=sprintf("<script>var roomlocation = { A: %s, B: %s, C: %s }</script>\n", getA(coords), getB(coords), getC(coords))
+	# printf "loc: %s\n", roomlocation
+	headerfile = headerfile roomlocation
 }
 
 END {
