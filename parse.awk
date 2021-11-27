@@ -1,26 +1,26 @@
 #!/bin/awk -f
 
-#/=>/ { print }
-
 function mkpipe(name, url) {
-	printf "PIPE: name=%s url=%s\n", name, url;
+	# printf "PIPE: name=%s url=%s\n", name, url;
 	pipes[name]=url
 }
 
 function mkroom(name, type, vaddr, paddr) {
-	printf("ROOM: name=%s, type=%s, vaddr=%s paddr=%s\n", name, type, vaddr, paddr)
+	# printf("ROOM: name=%s, type=%s, vaddr=%s paddr=%s\n", name, type, vaddr, paddr)
 
 	if (name == "") {
-		printf "empty line: skip\n";
+		# printf "empty line: skip\n";
 		return
 	}
 	navents[roomcnt] = name;
+	typeents[roomcnt] = type;
+	coordents[roomcnt] = vaddr;
 
 	pathidx = index(paddr, "/")
 	
 	split(paddr, patharr, "/");
 
-	printf "PATHARR[0]=%s\n", patharr[1];
+	# printf "PATHARR[0]=%s\n", patharr[1];
 	destents[roomcnt] = patharr[1];
 	pathents[roomcnt] = substr(paddr, pathidx)
 	roomcnt++
@@ -29,6 +29,9 @@ function mkroom(name, type, vaddr, paddr) {
 BEGIN {
 	split("", navents)
 	split("", destents)
+	split("", pathents)
+	split("", typeents)
+	split("", coordents)
 	roomcnt = 0
 	headerfile=""
 }
@@ -82,7 +85,7 @@ END {
 		# printf "outfile=%s\n", outdir
 
 		ensuredir=sprintf("mkdir -p %s\n", outdir)
-		printf "ensuredir=%s\n", ensuredir
+		# printf "ensuredir=%s\n", ensuredir
 		system(ensuredir)
 	
 		outfile = outdir "/index.html"
@@ -90,8 +93,16 @@ END {
 		# printf "cmd=%s\n", cmd
 		system(headercmd)
 		
-		contentcmd=sprintf("cat %s.md | pandoc -f markdown >> %s", navents[i], outfile)
-		printf "%s\n", contentcmd
-		system(contentcmd)
+		type=typeents[i]
+		switch (type) {
+		case "info":
+			printf "[GENERATE info %s]\n", navents[i]
+			contentcmd=sprintf("cat %s.md | pandoc -f markdown >> %s", navents[i], outfile);
+			# printf "%s\n", contentcmd
+			system(contentcmd);
+			break;
+		default:
+			printf "WHAT IS GOING ON AHHHH"
+		}
 	}
 }
