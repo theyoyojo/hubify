@@ -46,7 +46,7 @@ if [ ! -z ${DEMOLISH} ]; then
 fi
 
 echo "[BUILD BEGINS]"
-cat ${TRUCK}/${FLOORPLAN} | ./parse.awk
+cat ${TRUCK}/${FLOORPLAN} | ./unload.awk
 cat ${HOUSE}.yard/coordinator | ./coordinate.awk
 
 mkdir -p ${HOUSE}
