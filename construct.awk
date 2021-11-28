@@ -1,32 +1,58 @@
 #!/bin/awk -f
 
-	# return sprintf("<script>var roomlocation = { A: %s, B: %s, C: %s }</script>\n", getA(coords), getB(coords), getC(coords))
-	
-	# for (i=0; i<roomcnt; ++i) {
-	# 	gencoords(i);
+@include "utils.awk"
 
-	# 	outdir = outdir pathents[i]
+NR==1 { name=$0 }
+NR==2 { type=$0 }
+NR==3 { vaddr=$0 }
+NR==4 { paddr=$0 }
 
-	# 	printf "outdir: %s\n", outdir
+END {
+	webpage=""
 
-	# 	ensuredir=sprintf("mkdir -p %s\n", outdir)
-	# 	system(ensuredir)
-	
-	# 	outfile = outdir "/index.html"
-	# 	headercmd=sprintf("echo '%s' > %s", headerfile, outfile)
-	# 	system(headercmd)
+	getline < "House"
+	house=$0
 
-	# 	navcmd=sprintf("echo '%s' >> %s", navfile, outfile)
-	# 	system(navcmd)
-		
-	# 	type=typeents[i]
-	# 	switch (type) {
-	# 	case "info":
-	# 		printf "[CONSTRUCT info %s]\n", navents[i]
-	# 		contentcmd=sprintf("cat %s.md | pandoc -f markdown >> %s", navents[i], outfile);
-	# 		system(contentcmd);
-	# 		break;
-	# 	default:
-	# 		printf "WHAT IS GOING ON AHHHH"
-	# 	}
-	# }
+	RS="\0"
+
+	headerfile = house ".yard/head"
+	getline < headerfile
+	head=$0
+
+	navfile = house ".yard/nav"
+	getline < navfile
+	nav=$0
+
+	mapfile = house ".yard/minimap"
+	getline < mapfile
+	minimap=$0
+
+	roomlocation=sprintf("<script>var roomlocation = { A: %s, B: %s, C: %s }</script>\n", getA(vaddr), getB(vaddr), getC(vaddr))
+
+
+	webpage = webpage "<html>\n<head>\n"
+	webpage = (webpage head) "\n</head>\n"
+	webpage = webpage nav
+	webpage = webpage roomlocation
+	webpage = webpage minimap
+
+	# print house "/" paddr
+	# print "mkdir -p '" house "/" paddr
+	system("mkdir -p '" house "/" paddr "'")
+
+	switch(type) {
+	case "info":
+		printf "[CONSTRUCT info %s]\n", name
+		contentfile=house ".truck/" name ".md"
+		# print contentfile
+		outfile=house "/" paddr "/index.html"
+		# print "echo '" webpage "' >> '" outfile "'"
+		system("echo '" webpage "' > '" outfile "'")
+		system("cat '" contentfile "' | pandoc -f markdown >> " outfile);
+		system("echo '</html>' >> '" outfile "'")
+		break;
+	default:
+		printf "[FATAL: mysterious room]\n"
+	}
+
+}

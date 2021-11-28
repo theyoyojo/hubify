@@ -44,55 +44,73 @@ function mkroom(a,b) {
 var coordmap = {}
 
 function drawmap() {
-	var x,y,z
+	var x,y,z,tmp
 	// coordinate table
 	ctab = document.getElementById("coordtab")
 
-	console.log(ctab)
+	console.log("THE CTAB", ctab)
 
-	for (var i = 1, row; row = ctab.rows[i]; ++i) {
-		var tmp
-		for (var j = 0, col; col = row.cells[j]; ++j) {
-			switch(j) {
-			case 0:
-				x = col.innerText
-				if (!(x in coordmap)) {
-					coordmap[x] = {}
-				}
-				tmp = coordmap[x]
-				break
-			case 1:
-				y = col.innerText
-				if (!(y in tmp)) {
-					tmp[y] = {}
-				}
-				tmp = tmp[y]
-				break
-			case 2:
-				z = col.innerText
-				if (!(z in tmp)) {
-					tmp[z] = {}
-				}
-				// add page link to map
-				tmp[z] = row.cells[3].innerText
-				break
-			}
-			// what to do with z? color?
+	for (var i = 0; i < maparr.length; ++i) {
+		if (!((x = maparr[i][0]) in coordmap)) {
+			coordmap[x] = {}
 		}
-		console.log(x.y)
+		tmp = coordmap[x]
+		if (!((y = maparr[i][1]) in tmp)) {
+			tmp[y] = {}
+		}
+		tmp = tmp[y]
+		if (!((z = maparr[i][2]) in tmp)) {
+			tmp[z] = {}
+		}
+		tmp[z] = maparr[i][3]
+
 		mkroom(x,y)
 	}
+
+	// for (var i = 1, row; row = ctab.rows[i]; ++i) {
+	// 	var tmp
+	// 	for (var j = 0, col; col = row.cells[j]; ++j) {
+			// console.log("i", i, "j", j, "text", col.innerText, "x")
+			// switch(j) {
+			// case 0:
+			// 	x = col.innerText
+			// 	if (!(x in coordmap)) {
+			// 		coordmap[x] = {}
+			// 	}
+			// 	tmp = coordmap[x]
+			// 	break
+			// case 1:
+			// 	y = col.innerText
+			// 	if (!(y in tmp)) {
+			// 		tmp[y] = {}
+			// 	}
+			// 	tmp = tmp[y]
+			// 	break
+			// case 2:
+			// 	z = col.innerText
+			// 	if (!(z in tmp)) {
+			// 		tmp[z] = {}
+			// 	}
+			// 	// add page link to map
+			// 	tmp[z] = row.cells[3].innerText
+			// 	break
+			// }
+			// what to do with z? color?
+		// }
+		// console.log(x.y)
+		// mkroom(x,y)
+	// }
 }
 
 // a key map of the controls
 var ctrls = {
-  37: 'left',
-  38: 'up',
-  39: 'right',
-  40: 'down',
+  37: "left",
+  38: "up",
+  39: "right",
+  40: "down",
 }
 
-document.addEventListener('keydown', function(e) {
+document.addEventListener("keydown", function(e) {
 
 	var key = e.keyCode
 
@@ -101,16 +119,17 @@ document.addEventListener('keydown', function(e) {
 	console.log("THE NEXT:", nxt)
 
 	switch(ctrls[e.keyCode]) {
-	case 'right':
+	case "right":
+		console.log("HELLO")
 		nxt.A += 1
 		break
-	case 'left':
+	case "left":
 		nxt.A -= 1
 		break
-	case 'up':
+	case "up":
 		nxt.B += 1
 		break
-	case 'down':
+	case "down":
 		nxt.B -= 1
 		break
 	}
@@ -133,8 +152,5 @@ document.addEventListener('keydown', function(e) {
 
 var canvas = document.getElementById("minimap");
 var ctx = canvas.getContext("2d");
-
-x = CC(0,0)
-y = CC(10,10)
 console.log(roomlocation)
 drawmap()

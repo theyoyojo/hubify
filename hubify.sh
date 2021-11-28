@@ -4,7 +4,7 @@ usage() {
 	echo "${0} <truck location>"
 }
 
-echo "[HUBIFY]"
+echo "[HUBIFY HELLO]"
 
 DEMOLISH=
 if [ -z ${1} ]; then
@@ -35,8 +35,9 @@ fi
 
 echo "[FLOORPLAN ${FLOORPLAN}]"
 
+HOUSE=$(cat ${TRUCK}/${FLOORPLAN} | awk '!/#/ && /House/ {for (i=2; i<=NF; ++i) {house = house $i;} print house}')
+
 if [ ! -z ${DEMOLISH} ]; then
-	HOUSE=$(cat ${TRUCK}/${FLOORPLAN} | awk '!/#/ && /House/ {for (i=2; i<=NF; ++i) {house = house $i;} print house}')
 	echo "[DEMOLISH HOUSE ${HOUSE}]"
 	rm -rf ${HOUSE}.yard
 	rm -rf ${HOUSE}
@@ -45,3 +46,14 @@ fi
 
 echo "[BUILD BEGINS]"
 cat ${TRUCK}/${FLOORPLAN} | ./parse.awk
+cat ${HOUSE}.yard/coordinator | ./coordinate.awk
+
+mkdir -p ${HOUSE}
+ROOMS=$(ls ${HOUSE}.yard | grep "\.room$")
+
+for room in ${ROOMS}; do
+	cat ${HOUSE}.yard/${room} | ./construct.awk
+done
+
+echo "[BUILD COMPLETE]"
+echo "[HUBIFY GOODBYE]"
