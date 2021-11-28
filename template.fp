@@ -20,5 +20,5 @@ House Test
 # - dash may fix this
 test => file:///home/jsavitz/hubify/foobar
 testx info (0,0,0) test/x
-testy info (0,2,0) test/y
+testy info (0,1,0) test/y
 testz info (1,0,0) test/z

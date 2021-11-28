@@ -53,32 +53,35 @@ function drawmap() {
 	for (var i = 1, row; row = ctab.rows[i]; ++i) {
 		var tmp
 		for (var j = 0, col; col = row.cells[j]; ++j) {
-			if (j === 0) {
+			switch(j) {
+			case 0:
 				x = col.innerText
 				if (!(x in coordmap)) {
 					coordmap[x] = {}
 				}
 				tmp = coordmap[x]
-			} else if (j === 1) {
+				break
+			case 1:
 				y = col.innerText
 				if (!(y in tmp)) {
 					tmp[y] = {}
 				}
 				tmp = tmp[y]
-			} else if (j === 2) {
+				break
+			case 2:
 				z = col.innerText
 				if (!(z in tmp)) {
 					tmp[z] = {}
 				}
 				// add page link to map
 				tmp[z] = row.cells[3].innerText
+				break
 			}
 			// what to do with z? color?
 		}
 		console.log(x.y)
 		mkroom(x,y)
 	}
-
 }
 
 // a key map of the controls
@@ -92,11 +95,38 @@ var ctrls = {
 document.addEventListener('keydown', function(e) {
 
 	var key = e.keyCode
-	
-	console.log(e.keyCode)
 
-	if (ctrls[e.keyCode] === 'left') {
-		alert("asdfasdf")
+	var nxt = roomlocation
+	
+	console.log("THE NEXT:", nxt)
+
+	switch(ctrls[e.keyCode]) {
+	case 'right':
+		nxt.A += 1
+		break
+	case 'left':
+		nxt.A -= 1
+		break
+	case 'up':
+		nxt.B += 1
+		break
+	case 'down':
+		nxt.B -= 1
+		break
+	}
+
+	console.log("NXT A", nxt.A)
+
+	if (nxt.A in coordmap) {
+		console.log("AAA", coordmap[nxt.A])
+		if (nxt.B in coordmap[nxt.A]) {
+			console.log("BBB", coordmap[nxt.B])
+			if (nxt.C in coordmap[nxt.A][nxt.B]) {
+				console.log("CCC", coordmap[nxt.C])
+				console.log(nxt)
+				window.location.href = coordmap[nxt.A][nxt.B][nxt.C]
+			}
+		}
 	}
 
 });
