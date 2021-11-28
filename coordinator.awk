@@ -3,13 +3,10 @@
 @include "utils.awk"
 
 BEGIN {
-
-
+	# coordinate file is named after the House
 	house=getline < "House"
 	printf "[COORDINATE %s]\n", $0
-
 	n=0
-	# FS=","
 }
 
 /#/ { next }

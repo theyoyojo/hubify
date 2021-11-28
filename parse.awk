@@ -6,15 +6,12 @@
 @include "utils.awk"
 
 function mkpipe(name, url) {
-	# printf "PIPE: name=%s url=%s\n", name, url;
 	pipes[name]=url;
 }
 
 function mkroom(name, type, vaddr, paddr) {
-	# printf("ROOM: name=%s, type=%s, vaddr=%s paddr=%s\n", name, type, vaddr, paddr)
 
 	if (name == "") {
-		# printf "empty line: skip\n";
 		return;
 	}
 	navents[roomcnt] = name;
@@ -97,13 +94,11 @@ function gencoords(idx) {
 	coords=coordents[i]	
 
 	coordswithdest = coords " " pipes[destents[i]] pathents[i] "/index.html"
-	# printf "COORDS: %s\n", coords;
 	thiscoordcmd=sprintf(coordcmd, coordswithdest);
-	# printf "cmd: %s\n", thiscoordcmd;
 	system(thiscoordcmd)
 
+	# put current room location in the header
 	roomlocation=sprintf("<script>var roomlocation = { A: %s, B: %s, C: %s }</script>\n", getA(coords), getB(coords), getC(coords))
-	# printf "loc: %s\n", roomlocation
 	headerfile = headerfile roomlocation
 }
 
@@ -111,9 +106,8 @@ END {
 	genhouse();
 	genhead();
 	gennav();
-
+	
 	for (i=0; i<roomcnt; ++i) {
-		
 		gencoords(i);
 
 		destname=destents[i];
@@ -121,19 +115,15 @@ END {
 		protidx=index(realdest, "://");
 		outdir=substr(realdest, protidx+3)
 		outdir = outdir pathents[i]
-		# printf "outfile=%s\n", outdir
 
 		ensuredir=sprintf("mkdir -p %s\n", outdir)
-		# printf "ensuredir=%s\n", ensuredir
 		system(ensuredir)
 	
 		outfile = outdir "/index.html"
 		headercmd=sprintf("echo '%s' > %s", headerfile, outfile)
-		# printf "cmd=%s\n", cmd
 		system(headercmd)
 
 		navcmd=sprintf("echo '%s' >> %s", navfile, outfile)
-		# printf "cmd=%s\n", cmd
 		system(navcmd)
 		
 		type=typeents[i]
