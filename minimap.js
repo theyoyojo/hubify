@@ -96,7 +96,7 @@ document.addEventListener('keydown', function(e) {
 
 	var key = e.keyCode
 
-	var nxt = roomlocation
+	var nxt = JSON.parse(JSON.stringify(roomlocation))
 	
 	console.log("THE NEXT:", nxt)
 
