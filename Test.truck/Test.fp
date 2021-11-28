@@ -24,3 +24,5 @@ testy info (0,1,0) host/y
 testz info (1,0,0) host/z
 nuts info (-1,0,0) host/nuts
 notes info (-2,0,0) host/notes
+help info (1,1,0) host/help
+p portal (1,1,0) host/p

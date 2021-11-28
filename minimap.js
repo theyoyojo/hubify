@@ -74,6 +74,16 @@ var ctrls = {
   40: "down",
 }
 
+function attemptmove(coords) {
+	if (coords.A in coordmap) {
+		if (coords.B in coordmap[coords.A]) {
+			if (coords.C in coordmap[coords.A][coords.B]) {
+				window.location.href = coordmap[coords.A][coords.B][coords.C]
+			}
+		}
+	}
+}
+
 document.addEventListener("keydown", function(e) {
 
 	var key = e.keyCode
@@ -97,13 +107,7 @@ document.addEventListener("keydown", function(e) {
 		return
 	}
 
-	if (nxt.A in coordmap) {
-		if (nxt.B in coordmap[nxt.A]) {
-			if (nxt.C in coordmap[nxt.A][nxt.B]) {
-				window.location.href = coordmap[nxt.A][nxt.B][nxt.C]
-			}
-		}
-	}
+	attemptmove(nxt)
 
 });
 

@@ -31,7 +31,7 @@ END {
 
 
 	webpage = webpage "<html>\n<head>\n"
-	webpage = (webpage head) "\n</head>\n"
+	webpage = (webpage head) "\n</head>\n<body>\n"
 	webpage = webpage nav
 	webpage = webpage roomlocation
 	webpage = webpage minimap
@@ -40,19 +40,27 @@ END {
 	# print "mkdir -p '" house "/" paddr
 	system("mkdir -p '" house "/" paddr "'")
 
+	outfile=house "/" paddr "/index.html"
+	system("echo '" webpage "' > '" outfile "'")
+
+	printf "[CONSTRUCT %s %s]\n", type, name
 	switch(type) {
 	case "info":
-		printf "[CONSTRUCT info %s]\n", name
 		contentfile=house ".truck/" name ".md"
-		# print contentfile
-		outfile=house "/" paddr "/index.html"
-		# print "echo '" webpage "' >> '" outfile "'"
-		system("echo '" webpage "' > '" outfile "'")
 		system("cat '" contentfile "' | pandoc -f markdown >> " outfile);
-		system("echo '</html>' >> '" outfile "'")
 		break;
+	case "portal":
+		wherefile=house ".truck/" name ".portal"
+		# room + plan files?
+		RS="\n"
+		getline < wherefile
+		coords=$0
+		cmd=sprintf("echo '<script>attemptmove({A: %s, B: %s, C: %s})</script>' >> '%s'", getA(coords), getB(coords), getC(coords), outfile)
+		system(cmd)
+		break
 	default:
 		printf "[FATAL: mysterious room]\n"
 	}
 
+	system("echo '</body>\n</html>' >> '" outfile "'")
 }
