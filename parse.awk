@@ -38,6 +38,7 @@ BEGIN {
 	split("", typeents);
 	split("", coordents);
 	roomcnt = 0;
+	navfile=""
 	headerfile="";
 }
 
@@ -57,33 +58,37 @@ BEGIN {
 # validate better?
 !/=>/ { mkroom($1,$2,$3,$4); next;}
 
-function gennav() {
+function genhead() {
 	RS="\0"
 	getline < "style.css"
 	headerfile = headerfile "<style>" $0 "</style>"
+}
 
+function gennav() {
 	for (i in navents) {
 		ent=navents[i];
 		destname=destents[i];
 		realdest=pipes[destname];
 		path=pathents[i]
-		# printf "link %s => %s\n", ent, realdest
-		headerfile = headerfile sprintf( "<a href=\"%s/index.html\"> %s </a>", realdest path, navents[i])
+
+		navfile = navfile sprintf( "<a href=\"%s/index.html\"> %s </a>", realdest path, navents[i])
 		if (i < roomcnt - 1) {
-			headerfile = headerfile sprintf(" | ")
+			navfile = navfile sprintf(" | ")
 		} else {
-			headerfile = headerfile  sprintf("\n");
+			navfile = navfile  sprintf("\n");
 		}
 	}
 }
 
 function genhouse() {
-	headerfile = headerfile sprintf("<h1>%s</h1>\n", house);
+	# add house name to nav
+	navfile = navfile sprintf("<h1>%s</h1>\n", house);
 	coordcmd=sprintf("echo '%%s' >> %s.coords", house);
 	thiscoordcmd=sprintf("echo '# COORDINATOR 0.1' > %s.coords", house);
 	system(thiscoordcmd)
 	printf "[HOUSE %s]\n", house
 
+	# export House name
 	housecmd=sprintf("echo '%s' > House", house)
 	system(housecmd)
 }
@@ -104,6 +109,7 @@ function gencoords(idx) {
 
 END {
 	genhouse();
+	genhead();
 	gennav();
 
 	for (i=0; i<roomcnt; ++i) {
@@ -125,6 +131,10 @@ END {
 		headercmd=sprintf("echo '%s' > %s", headerfile, outfile)
 		# printf "cmd=%s\n", cmd
 		system(headercmd)
+
+		navcmd=sprintf("echo '%s' >> %s", navfile, outfile)
+		# printf "cmd=%s\n", cmd
+		system(navcmd)
 		
 		type=typeents[i]
 		switch (type) {

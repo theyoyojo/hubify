@@ -32,7 +32,11 @@ END {
 
 	printf "</table>\n"
 
-	printf "<canvas id=\"minimap\" width=\"400\" height=\"200\" style=\"border:1px solid #000000;\"></canvas>"
+	# <div style="position:relative;min-width:960px">
+ # <img src="..." style="position: absolute;right:0;top:0" />
+# </div>
+
+	printf "<canvas id=\"minimap\" width=\"400\" height=\"200\" style=\"border:1px solid #000000;position:absolute;right:0;top:0\"></canvas>"
 
 	RS="\0"
 	getline < "minimap.js"
