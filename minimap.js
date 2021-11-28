@@ -64,6 +64,10 @@ function drawmap() {
 		mkroom(x,y)
 	}
 
+	var mapinfo = document.getElementById("mapinfo")
+	var l = roomlocation
+	mapinfo.innerHTML = "(" + l.A + "," + l.B + "," + l.C + ")"
+
 }
 
 // a key map of the controls

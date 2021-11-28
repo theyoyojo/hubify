@@ -36,8 +36,6 @@ END {
 	webpage = webpage roomlocation
 	webpage = webpage minimap
 
-	# print house "/" paddr
-	# print "mkdir -p '" house "/" paddr
 	system("mkdir -p '" house "/" paddr "'")
 
 	outfile=house "/" paddr "/index.html"
@@ -55,7 +53,12 @@ END {
 		RS="\n"
 		getline < wherefile
 		coords=$0
-		cmd=sprintf("echo '<script>attemptmove({A: %s, B: %s, C: %s})</script>' >> '%s'", getA(coords), getB(coords), getC(coords), outfile)
+
+		RS="\0"
+		getline < "portal.js"
+		portaljs=$0
+
+		cmd=sprintf("echo '<div id=\"portal\"></div><script>%s portal({A: %s, B: %s, C: %s})</script>' >> '%s'", portaljs, getA(coords), getB(coords), getC(coords), outfile)
 		system(cmd)
 		break
 	default:
