@@ -7,7 +7,7 @@
 
 function mkpipe(name, url) {
 	# printf "PIPE: name=%s url=%s\n", name, url;
-	pipes[name]=url
+	pipes[name]=url;
 }
 
 function mkroom(name, type, vaddr, paddr) {
@@ -15,33 +15,33 @@ function mkroom(name, type, vaddr, paddr) {
 
 	if (name == "") {
 		# printf "empty line: skip\n";
-		return
+		return;
 	}
 	navents[roomcnt] = name;
 	typeents[roomcnt] = type;
 	coordents[roomcnt] = vaddr;
 
-	pathidx = index(paddr, "/")
+	pathidx = index(paddr, "/");
 	
 	split(paddr, patharr, "/");
 
 	# printf "PATHARR[0]=%s\n", patharr[1];
 	destents[roomcnt] = patharr[1];
-	pathents[roomcnt] = substr(paddr, pathidx)
-	roomcnt++
+	pathents[roomcnt] = substr(paddr, pathidx);
+	roomcnt++;
 }
 
 BEGIN {
-	split("", navents)
-	split("", destents)
-	split("", pathents)
-	split("", typeents)
-	split("", coordents)
-	roomcnt = 0
-	headerfile=""
+	split("", navents);
+	split("", destents);
+	split("", pathents);
+	split("", typeents);
+	split("", coordents);
+	roomcnt = 0;
+	headerfile="";
 }
 
-/#/ { next }
+/#/ { next; }
 
 # /^.*#.*/  {}
 /=>/ { mkpipe($1,$3); next;}
@@ -55,9 +55,13 @@ BEGIN {
 }
 
 # validate better?
-!/=>/ { mkroom($1,$2,$3,$4) }
+!/=>/ { mkroom($1,$2,$3,$4); next;}
 
 function gennav() {
+	RS="\0"
+	getline < "style.css"
+	headerfile = headerfile "<style>" $0 "</style>"
+
 	for (i in navents) {
 		ent=navents[i];
 		destname=destents[i];
@@ -86,8 +90,10 @@ function genhouse() {
 
 function gencoords(idx) {
 	coords=coordents[i]	
+
+	coordswithdest = coords " " destents[i] pathents[i]
 	# printf "COORDS: %s\n", coords;
-	thiscoordcmd=sprintf(coordcmd, coords);
+	thiscoordcmd=sprintf(coordcmd, coordswithdest);
 	# printf "cmd: %s\n", thiscoordcmd;
 	system(thiscoordcmd)
 

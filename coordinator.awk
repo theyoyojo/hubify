@@ -15,17 +15,18 @@ BEGIN {
 /#/ { next }
 
 {
-	As[n]=getA($0)
-	Bs[n]=getB($0)
-	Cs[n]=getC($0)
+	As[n]=getA($1)
+	Bs[n]=getB($1)
+	Cs[n]=getC($1)
 	n++
 }
 
 END {
-	printf "<table id=\"coordtab\">\n\t<tr>\n\t\t<th>A</th>\n\t\t<th>B</th>\n\t\t<th>C</th>\n\t</tr>\n"
+	printf "<table id=\"coordtab\">\n\t<tr>\n\t\t<th>A</th>\n\t\t<th>B</th>\n\t\t<th>C</th>\n\t\t<th>location</th>\n\t</tr>\n"
 	for (i=0; i < n; ++i) {
 		# printf "(%s,%s,%s)\n", As[i], Bs[i], Cs[i]
-		printf "<tr>\n\t\t<th>%s</th>\n\t\t<th>%s</th>\n\t\t<th>%s</th>\n\t</tr>\n", As[i], Bs[i], Cs[i]
+		printf "<tr>\n\t\t<th>%s</th>\n\t\t<th>%s</th>\n\t\t<th>%s</th>\n\t\t<tr>%s</tr>\n\t</tr>\n", As[i], Bs[i], Cs[i], locations[i]
+
 	}
 
 	printf "</table>\n"
