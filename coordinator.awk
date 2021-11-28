@@ -18,6 +18,7 @@ BEGIN {
 	As[n]=getA($1)
 	Bs[n]=getB($1)
 	Cs[n]=getC($1)
+	locations[n] = $2
 	n++
 }
 
@@ -25,7 +26,7 @@ END {
 	printf "<table id=\"coordtab\">\n\t<tr>\n\t\t<th>A</th>\n\t\t<th>B</th>\n\t\t<th>C</th>\n\t\t<th>location</th>\n\t</tr>\n"
 	for (i=0; i < n; ++i) {
 		# printf "(%s,%s,%s)\n", As[i], Bs[i], Cs[i]
-		printf "<tr>\n\t\t<th>%s</th>\n\t\t<th>%s</th>\n\t\t<th>%s</th>\n\t\t<tr>%s</tr>\n\t</tr>\n", As[i], Bs[i], Cs[i], locations[i]
+		printf "<tr>\n\t\t<td>%s</td>\n\t\t<td>%s</td>\n\t\t<td>%s</td>\n\t\t<td>%s</td>\n\t</tr>\n", As[i], Bs[i], Cs[i], locations[i]
 
 	}
 

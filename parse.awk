@@ -91,7 +91,7 @@ function genhouse() {
 function gencoords(idx) {
 	coords=coordents[i]	
 
-	coordswithdest = coords " " destents[i] pathents[i]
+	coordswithdest = coords " " pipes[destents[i]] pathents[i] "/index.html"
 	# printf "COORDS: %s\n", coords;
 	thiscoordcmd=sprintf(coordcmd, coordswithdest);
 	# printf "cmd: %s\n", thiscoordcmd;
