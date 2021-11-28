@@ -23,15 +23,12 @@ BEGIN {
 }
 
 END {
-	mapfile = mapfile sprintf("<table style=\"position:absolute;overflow:hidden;visibility:hidden;\" id=\"coordtab\">\n\t<tr>\n\t\t<th>A</th>\n\t\t<th>B</th>\n\t\t<th>C</th>\n\t\t<th>location</th>\n\t</tr>\n")
 	for (i=0; i < n; ++i) {
 		# printf "(%s,%s,%s)\n", As[i], Bs[i], Cs[i]
-		mapfile = mapfile sprintf("<tr>\n\t\t<td>%s</td>\n\t\t<td>%s</td>\n\t\t<td>%s</td>\n\t\t<td>%s</td>\n\t</tr>\n", As[i], Bs[i], Cs[i], locations[i])
 		maparr = maparr "[ " As[i] ", " Bs[i] ", " Cs[i] ", \"" locations[i] "\" ], "
 
 	}
 
-	mapfile = mapfile "</table>\n"
 	maparr = maparr "]\n"
 
 	# <div style="position:relative;min-width:960px">
