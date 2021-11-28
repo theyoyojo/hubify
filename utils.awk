@@ -23,3 +23,16 @@ function getC(coords) {
 	}
 	return C
 }
+
+function paddrtolink(paddr) {
+	link=""
+	split(paddr,patharr,"/")
+	# for (i in patharr) {
+	# 	printf "%d: %s\n", i, patharr[i]
+	# }
+	for (i = 0; i < length(patharr); ++i) {
+		link = link "../"
+	}
+	link = link paddr
+	return link
+}

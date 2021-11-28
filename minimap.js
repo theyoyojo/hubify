@@ -66,7 +66,7 @@ function drawmap() {
 
 	var mapinfo = document.getElementById("mapinfo")
 	var l = roomlocation
-	mapinfo.innerHTML = "(" + l.A + "," + l.B + "," + l.C + ")"
+	mapinfo.innerHTML = roomname + " (" + l.A + "," + l.B + "," + l.C + ")"
 
 }
 
@@ -79,13 +79,24 @@ var ctrls = {
 }
 
 function attemptmove(coords) {
+	var r = roomlocation
+	var link = ""
+
+	// "page table" lookup
 	if (coords.A in coordmap) {
-		if (coords.B in coordmap[coords.A]) {
-			if (coords.C in coordmap[coords.A][coords.B]) {
-				window.location.href = coordmap[coords.A][coords.B][coords.C]
-			}
+	if (coords.B in coordmap[coords.A]) {
+	if (coords.C in coordmap[coords.A][coords.B]) {
+		paddr = coordmap[coords.A][coords.B][coords.C]
+		currentpaddr = coordmap[r.A][r.B][r.C]
+		patharr = currentpaddr.split("/")
+		for (var i = 0; i < patharr.length; ++i) {
+			link += "../"
 		}
-	}
+		link += paddr + "/index.html"
+		console.log(link)
+
+		window.location.href = link
+	}}}
 }
 
 document.addEventListener("keydown", function(e) {

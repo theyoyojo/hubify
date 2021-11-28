@@ -77,22 +77,23 @@ function genhead() {
 }
 
 function gennav() {
-	for (i in nameents) {
-		name=nameents[i];
-		paddr=paddrents[i];
+	# for (i in nameents) {
+	# 	name=nameents[i];
+	# 	paddr=paddrents[i];
 
-		relidx=index(paddr, "/")
-		reladdr= ".." substr(paddr, relidx)
 
-		navfile = navfile sprintf( "<a href=\"%s/index.html\"> %s </a>", reladdr, name)
+	# 	navfile = navfile sprintf( "<a href=\"%s/index.html\"> %s </a>", paddrtolink(paddr), name)
 
-		# arrange in the form: link | link | link
-		if (i < roomcnt - 1) {
-			navfile = navfile sprintf(" | ")
-		} else {
-			navfile = navfile  sprintf("\n");
-		}
-	}
+	# 	# arrange in the form: link | link | link
+	# 	if (i < roomcnt - 1) {
+	# 		navfile = navfile sprintf(" | ")
+	# 	} else {
+	# 		navfile = navfile  sprintf("\n");
+	# 	}
+	# }
+	# navfile = navfile "haha there is no nav good luck"
+
+	# nah lets forget about nav for now
 
 	printf "[ASSEMBLE nav]\n"
 	system("echo '" navfile "' > " house ".yard/nav")
@@ -103,9 +104,9 @@ function gencoords(idx) {
 	coords=vaddrents[i]	
 
 	# add an entry for this room to the coordinator file
-	relidx=index(paddrents[i], "/")
-	reladdr= ".." substr(paddrents[i], relidx)
-	coordswithdest = coords " " reladdr "/index.html"
+	# relidx=index(paddrents[i], "/")
+	# reladdr= ".." substr(paddrents[i], relidx)
+	coordswithdest = coords " " paddrents[i]
 	_coordcmd=sprintf(coordcmd, coordswithdest);
 	system(_coordcmd)
 }

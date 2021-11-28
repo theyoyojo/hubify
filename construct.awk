@@ -27,7 +27,7 @@ END {
 	getline < mapfile
 	minimap=$0
 
-	roomlocation=sprintf("<script>var roomlocation = { A: %s, B: %s, C: %s }</script>\n", getA(vaddr), getB(vaddr), getC(vaddr))
+	roomlocation=sprintf("<script>var roomlocation = { A: %s, B: %s, C: %s };roomname=\"%s\"</script>\n", getA(vaddr), getB(vaddr), getC(vaddr), name)
 
 
 	webpage = webpage "<html>\n<head>\n"
