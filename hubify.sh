@@ -41,6 +41,7 @@ if [ ! -z ${DEMOLISH} ]; then
 	echo "[DEMOLISH HOUSE ${HOUSE}]"
 	rm -rf ${HOUSE}.yard
 	rm -rf ${HOUSE}
+	rm -rf House
 	exit
 fi
 
