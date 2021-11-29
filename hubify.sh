@@ -56,5 +56,11 @@ for room in ${ROOMS}; do
 	cat ${HOUSE}.yard/${room} | ./construct.awk
 done
 
+
+ASSETS=$(ls ${HOUSE}.yard | grep "\.asset$")
+for asset in ${ASSETS}; do
+	echo ${asset} | ./decorate.awk
+done
+
 echo "[BUILD COMPLETE]"
 echo "[HUBIFY GOODBYE]"

@@ -24,12 +24,20 @@ function mkroom(name, type, vaddr, paddr) {
 	roomcnt++;
 }
 
+function mkasset(filename, dest) {
+	# printf "f: %s, d: %s\n", filename, dest
+	assetcmds[assetcnt] = "echo '" dest "' > '" house ".yard/" filename ".asset'"
+	assetcnt++
+}
+
 BEGIN {
 	split("", navents);
 	split("", typeents);
 	split("", vaddrents);
 	split("", paddrents);
+	split("", assetcmds);
 	roomcnt = 0;
+	assetcnt = 0;
 	navfile="";
 	headerfile="";
 	house = "";
@@ -39,12 +47,14 @@ BEGIN {
 
 /=>/ { mkpipe($1,$3); next;}
 
-/House/ {
+/^House/ {
 	for (i=2; i<=NF; ++i) {
 		house = house $i;
 	}
 	next;
 }
+
+/@/ { mkasset($2, $3); next }
 
 # validate better?
 !/=>/ { mkroom($1,$2,$3,$4); next;}
@@ -99,6 +109,11 @@ function gennav() {
 	system("echo '" navfile "' > " house ".yard/nav")
 }
 
+function genassets() {
+	for (i = 0; i < assetcnt; ++i) {
+		system(assetcmds[i])
+	}
+}
 
 function gencoords(idx) {
 	coords=vaddrents[i]	
@@ -119,6 +134,7 @@ END {
 	genhouse();
 	genhead();
 	gennav();
+	genassets();
 
 	for (i=0; i<roomcnt; ++i) {
 		gencoords(i);
