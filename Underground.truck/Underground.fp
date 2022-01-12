@@ -10,7 +10,3 @@ tozucc portal (1,4,0) redhat/zucc
 pihole portal (0,-2,0) software/pihole
 
 @ zucc.gif software/whois/zucc
-
-# failures:
-# zucc info (1,0,0) software/whois/zucc
-# rpi info (0,-2,0) redhat/rpi

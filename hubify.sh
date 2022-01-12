@@ -57,9 +57,10 @@ for room in ${ROOMS}; do
 done
 
 
-ASSETS=$(ls ${HOUSE}.yard | grep "\.asset$")
+ASSETS=$(ls -d ${HOUSE}.yard/*/** | grep "\.asset$")
+# echo $ASSETS
 for asset in ${ASSETS}; do
-	echo ${asset} | ./decorate.awk
+	echo ${asset} | sed -e 's/^[^\/]*\///g' | ./decorate.awk
 done
 
 echo "[BUILD COMPLETE]"

@@ -25,7 +25,13 @@ function mkroom(name, type, vaddr, paddr) {
 }
 
 function mkasset(filename, dest) {
-	# printf "f: %s, d: %s\n", filename, dest
+	# printf "assets f: %s, d: %s\n", filename, dest
+
+	## nasty hacks!
+	assetcmds[assetcnt] = "mkdir -p '" house ".yard/" filename ".asset'"
+	assetcnt++
+	assetcmds[assetcnt] = "rmdir '" house ".yard/" filename ".asset'"
+	assetcnt++
 	assetcmds[assetcnt] = "echo '" dest "' > '" house ".yard/" filename ".asset'"
 	assetcnt++
 }
